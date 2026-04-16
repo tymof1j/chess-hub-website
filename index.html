@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSE Chess Hub</title>
+<meta name="description" content="KSE Chess Hub — екосистема розвитку українських шахів при Київській школі економіки.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===================== RESET ===================== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:#FAFAF5;
+  color:#111;
+  font-family:'Crimson Pro',Georgia,serif;
+  font-size:clamp(1.15rem,1.4vw,1.35rem);
+  line-height:1.75;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+/* grain overlay */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  opacity:0.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ===================== VARIABLES ===================== */
+:root{
+  --cream:#FAFAF5;
+  --black:#111111;
+  --navy:#1A2E4F;
+  --yellow:#E8B931;
+  --yellow-dim:rgba(232,185,49,0.12);
+  --muted:#7A7A6E;
+  --muted-light:rgba(17,17,17,0.08);
+  --pad-x:clamp(28px,6vw,140px);
+  --pad-y:clamp(100px,14vh,200px);
+}
+
+/* ===================== TYPE SYSTEM ===================== */
+.t-display{font-family:'Unbounded',sans-serif;font-weight:800;line-height:1.0;letter-spacing:-0.03em}
+.t-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase}
+h1,h2,h3{font-family:'Unbounded',sans-serif;font-weight:800;line-height:1.05;letter-spacing:-0.03em}
+h1{font-size:clamp(2.2rem,5.5vw,4.8rem)}
+h2{font-size:clamp(1.7rem,4vw,3.2rem)}
+h3{font-size:clamp(1.05rem,1.6vw,1.35rem);font-weight:700;letter-spacing:-0.01em}
+
+/* ===================== REVEAL ===================== */
+.rv{opacity:0;transform:translateY(50px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+.rv.v{opacity:1;transform:translateY(0)}
+.rv-d1{transition-delay:.12s}.rv-d2{transition-delay:.24s}.rv-d3{transition-delay:.36s}.rv-d4{transition-delay:.48s}
+
+/* ===================== LANG TOGGLE (floating) ===================== */
+.lang-toggle{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;
+  padding:10px 20px;border:1.5px solid var(--black);background:var(--cream);color:var(--black);
+  cursor:pointer;transition:all .25s;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.lang-toggle:hover{background:var(--black);color:var(--cream)}
+
+/* (hero styles moved to HERO SPLASH and HERO CONTENT above) */
+/* ===================== HERO SPLASH ===================== */
+.hero-splash{
+  min-height:100vh;min-height:100svh;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  padding:0 var(--pad-x);
+}
+.hero-splash-inner{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+.hero-eq{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.4rem,7vw,6rem);
+  line-height:1;letter-spacing:-0.04em;
+  color:var(--black);white-space:nowrap;
+}
+.hero-gooey-wrap{
+  position:relative;
+  height:clamp(40px,7.5vw,80px);
+  width:100%;
+  filter:url(#goo);
+  display:flex;justify-content:center;
+}
+.hero-gooey{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.4rem,7vw,6rem);
+  line-height:1;letter-spacing:-0.04em;
+  color:var(--yellow);
+  white-space:nowrap;user-select:none;
+}
+/* ===================== HERO CONTENT ===================== */
+.hero-content{
+  padding:clamp(80px,12vh,160px) var(--pad-x) 80px;
+  position:relative;
+}
+.hero-kicker{color:var(--muted);margin-bottom:20px}
+.hero-content h1{margin-bottom:32px}
+.hero-sub{
+  font-size:clamp(1.15rem,1.6vw,1.5rem);
+  max-width:720px;color:var(--muted);
+  margin-bottom:52px;
+}
+.hero-sub strong{color:var(--black);font-weight:600}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(0.75rem,1vw,0.9rem);
+  letter-spacing:0.02em;color:var(--black);
+  padding:18px 0;transition:gap .3s;
+}
+.hero-cta:hover{gap:24px}
+.hero-cta .ln{width:48px;height:1.5px;background:var(--black);position:relative}
+.hero-cta .ln::after{content:'';position:absolute;right:-1px;top:-4px;width:8px;height:8px;border-right:1.5px solid var(--black);border-bottom:1.5px solid var(--black);transform:rotate(-45deg)}
+
+/* ===================== MARQUEE ===================== */
+.mq{
+  overflow:hidden;white-space:nowrap;
+  padding:20px 0;
+  border-top:1.5px solid var(--black);
+  border-bottom:1.5px solid var(--black);
+}
+.mq.mq-dark{border-color:rgba(250,250,245,0.12);background:var(--black)}
+.mq-inner{display:inline-flex;animation:mq-scroll 35s linear infinite}
+.mq-inner span{
+  font-family:'Unbounded',sans-serif;font-weight:700;
+  font-size:clamp(0.75rem,1.2vw,0.95rem);
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0 32px;
+}
+.mq .dot{display:inline-block;width:6px;height:6px;background:var(--yellow);border-radius:50%;vertical-align:middle;margin:0 8px;flex-shrink:0}
+.mq-dark .mq-inner span{color:rgba(250,250,245,0.4)}
+@keyframes mq-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===================== DARK SECTION ===================== */
+.s-dark{background:var(--black);color:var(--cream)}
+.s-dark .t-label{color:var(--yellow)}
+.s-dark h2{color:var(--cream)}
+
+/* ===================== BLUE SECTION ===================== */
+.s-blue{background:var(--navy);color:var(--cream)}
+.s-blue .t-label{color:var(--yellow)}
+
+/* ===================== SECTION COMMONS ===================== */
+section{padding:var(--pad-y) var(--pad-x)}
+.s-label{color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:14px}
+.s-label::before{content:'';width:20px;height:1.5px;background:currentColor}
+
+/* ===================== CONTEXT ===================== */
+.ctx-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(48px,8vw,120px);margin-top:56px}
+.ctx-body{font-size:clamp(1.15rem,1.4vw,1.35rem);color:rgba(250,250,245,0.6)}
+.ctx-body p+p{margin-top:24px}
+.ctx-quote{
+  border-left:3px solid var(--yellow);
+  padding:0 0 0 36px;
+  align-self:center;
+}
+.ctx-quote p{
+  font-family:'Crimson Pro',serif;font-style:italic;
+  font-size:clamp(1.3rem,2vw,1.7rem);
+  line-height:1.6;color:var(--cream);
+}
+.ctx-quote cite{
+  display:block;margin-top:20px;font-style:normal;
+  font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+  color:var(--yellow);letter-spacing:0.05em;
+}
+
+/* ===================== PROBLEMS ===================== */
+.prb{position:relative}
+.prb-ghost{
+  position:absolute;right:var(--pad-x);top:50%;transform:translateY(-50%);
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(10rem,28vw,22rem);
+  line-height:0.8;color:var(--muted-light);
+  pointer-events:none;user-select:none;
+}
+.prb-body{max-width:780px;margin-top:48px;position:relative;z-index:1}
+.prb-body p+p{margin-top:22px}
+.prb-body strong{color:var(--yellow);font-weight:700;background:var(--yellow-dim);padding:2px 6px}
+.s-dark .prb-body p{color:rgba(250,250,245,0.6)}
+.prb-coda{
+  margin-top:56px;position:relative;z-index:1;
+  font-family:'Unbounded',sans-serif;font-weight:700;
+  font-size:clamp(1.2rem,2.5vw,1.8rem);
+  color:var(--cream);letter-spacing:-0.01em;
+}
+
+/* ===================== FIDE ===================== */
+.fide-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(48px,8vw,100px);align-items:center}
+.fide-big{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(10rem,22vw,18rem);
+  line-height:0.8;color:var(--yellow);
+}
+.fide-big sup{font-size:0.22em;vertical-align:super;color:rgba(250,250,245,0.5);letter-spacing:0.02em}
+.fide-details h2{margin-bottom:28px;font-size:clamp(1.5rem,3vw,2.4rem)}
+.fide-tbl{width:100%;border-collapse:collapse;margin-top:28px}
+.fide-tbl tr{border-bottom:1px solid rgba(250,250,245,0.08)}
+.fide-tbl td{padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:clamp(0.8rem,1vw,0.92rem)}
+.fide-tbl .p{color:rgba(250,250,245,0.35);width:36px}
+.fide-tbl .c{font-family:'Unbounded',sans-serif;font-weight:600;font-size:clamp(0.8rem,1vw,0.92rem);letter-spacing:0.02em}
+.fide-tbl .r{text-align:right;color:rgba(250,250,245,0.5)}
+.fide-tbl tr.ua .c{color:var(--yellow)}
+.fide-tbl tr.ua .r{color:var(--yellow)}
+.fide-tbl tr.ua{border-bottom:1.5px solid var(--yellow)}
+.fide-note{margin-top:28px;font-style:italic;color:rgba(250,250,245,0.4);font-size:1.05rem}
+
+/* ===================== NEWS ===================== */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;margin-top:56px;background:var(--muted-light)}
+.news-card{background:var(--cream);padding:clamp(28px,3vw,48px);position:relative;overflow:hidden;transition:background .35s}
+.news-card::after{
+  content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;
+  background:var(--yellow);transform:scaleX(0);transform-origin:left;
+  transition:transform .5s cubic-bezier(0.16,1,0.3,1);
+}
+.news-card:hover::after{transform:scaleX(1)}
+.news-card:hover{background:var(--yellow-dim)}
+.news-date{color:var(--yellow);margin-bottom:16px;font-weight:500}
+.news-card h3{margin-bottom:14px;font-size:clamp(1.05rem,1.5vw,1.35rem);letter-spacing:-0.02em}
+.news-card p{color:var(--muted);font-size:clamp(0.95rem,1.1vw,1.1rem);line-height:1.65}
+
+/* ===================== KOVALENKO ===================== */
+.kov-layout{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(48px,8vw,100px);align-items:start}
+.kov-text h2{margin-bottom:36px;line-height:1.05}
+.kov-text h2 em{font-style:normal;display:block;color:var(--yellow)}
+.kov-body{color:rgba(250,250,245,0.6);font-size:clamp(1.15rem,1.4vw,1.35rem)}
+.kov-body p+p{margin-top:22px}
+.kov-mission{
+  margin-top:48px;padding:36px;
+  border:1.5px solid rgba(250,250,245,0.1);
+  background:rgba(232,185,49,0.06);
+}
+.kov-mission p{color:var(--cream);font-size:clamp(1.1rem,1.3vw,1.25rem)}
+.kov-side{border-left:1px solid rgba(250,250,245,0.08);padding-left:48px}
+.kov-stat{margin-bottom:52px}
+.kov-stat .num{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(2.5rem,4vw,3.8rem);
+  color:var(--yellow);line-height:1;
+}
+.kov-stat .lbl{margin-top:10px;color:rgba(250,250,245,0.4)}
+
+/* ===================== TEAM ===================== */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(32px,4vw,64px);margin-top:56px}
+.team-m{border-top:2.5px solid var(--black);padding-top:28px;transition:border-color .3s}
+.team-m:hover{border-color:var(--yellow)}
+.team-m h3{margin-bottom:8px;font-size:clamp(1.1rem,1.5vw,1.3rem)}
+.team-m .role{color:var(--yellow);margin-bottom:16px;font-weight:500}
+.team-m p{color:var(--muted);font-size:1.05rem}
+
+/* ===================== FOOTER ===================== */
+footer{
+  padding:var(--pad-y) var(--pad-x) 48px;
+  background:var(--black);color:var(--cream);
+  border-top:1.5px solid rgba(250,250,245,0.06);
+}
+.ft-statement{
+  font-family:'Crimson Pro',serif;font-style:italic;font-weight:400;
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  line-height:1.35;max-width:750px;
+  margin-bottom:80px;
+}
+.ft-statement em{font-style:normal;color:var(--yellow)}
+.ft-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:36px;border-top:1px solid rgba(250,250,245,0.08);
+}
+.ft-info{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(250,250,245,0.35);letter-spacing:0.04em;line-height:2.2}
+.ft-brand{font-family:'Unbounded',sans-serif;font-weight:700;font-size:0.75rem;color:rgba(250,250,245,0.25);letter-spacing:0.02em}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:900px){
+  .ctx-grid,.fide-grid,.kov-layout{grid-template-columns:1fr;gap:48px}
+  .news-grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .prb-ghost{display:none}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:28px}
+  .kov-side{border-left:none;padding-left:0;border-top:1px solid rgba(250,250,245,0.08);padding-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+}
+@media(max-width:600px){
+  .hero-gooey-wrap{height:32px}
+  .hero-eq{font-size:clamp(1.8rem,5vw,2.4rem)}
+  .hero-gooey{font-size:clamp(1.8rem,5vw,2.4rem)}
+  .fide-big{font-size:7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG FILTER -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+<defs><filter id="goo"><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/></filter></defs>
+</svg>
+
+<!-- LANG TOGGLE (floating) -->
+<button class="lang-toggle" id="langToggle">EN</button>
+
+<!-- ======================== HERO SPLASH (full viewport) ======================== -->
+<section class="hero-splash" id="hero">
+  <div class="hero-splash-inner">
+    <span class="hero-eq">KSE Chess Hub&nbsp;=</span>
+    <div class="hero-gooey-wrap" aria-label="Інтелект, Стратегія, Незалежність, Перемога">
+      <span class="hero-gooey" id="g1"></span>
+      <span class="hero-gooey" id="g2"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== HERO CONTENT ======================== -->
+<section class="hero-content">
+  <p class="t-label hero-kicker rv" data-i="hero-kicker">KSE &times; Chess &mdash; Kyiv School of Economics</p>
+  <h1 class="rv rv-d1" data-i="hero-h1">Інтелектуальна<br>незалежність починається<br>з першого ходу</h1>
+  <p class="hero-sub rv rv-d2" data-i="hero-sub"><strong>KSE Chess Hub</strong> — екосистема розвитку українських шахів при Київській школі економіки. Ми будуємо середовище, де талановиті молоді шахісти отримують тренування, підтримку та спільноту — і залишаються перемагати тут, в&nbsp;Україні.</p>
+  <a href="#context" class="hero-cta rv rv-d3"><span data-i="hero-cta">Дізнатись більше</span> <span class="ln"></span></a>
+</section>
+
+<!-- MARQUEE 1 -->
+<div class="mq">
+  <div class="mq-inner">
+    <span data-i="mq1-1">Шахи — це геополітика</span><span class="dot"></span>
+    <span data-i="mq1-2">Інтелектуальна незалежність</span><span class="dot"></span>
+    <span data-i="mq1-3">5-та федерація світу</span><span class="dot"></span>
+    <span data-i="mq1-4">Чемпіони Європи 2025</span><span class="dot"></span>
+    <span>KSE Chess Hub</span><span class="dot"></span>
+    <span data-i="mq1-1">Шахи — це геополітика</span><span class="dot"></span>
+    <span data-i="mq1-2">Інтелектуальна незалежність</span><span class="dot"></span>
+    <span data-i="mq1-3">5-та федерація світу</span><span class="dot"></span>
+    <span data-i="mq1-4">Чемпіони Європи 2025</span><span class="dot"></span>
+    <span>KSE Chess Hub</span><span class="dot"></span>
+  </div>
+</div>
+
+<!-- ======================== CONTEXT ======================== -->
+<section class="s-dark" id="context">
+  <p class="t-label s-label rv" data-i="ctx-label">01 — Контекст</p>
+  <h2 class="rv" data-i="ctx-h2">Шахи — це геополітика</h2>
+  <div class="ctx-grid">
+    <div class="ctx-body rv rv-d1">
+      <p data-i="ctx-p1">Шахи — одна з небагатьох сфер, де держава одночасно демонструє інтелектуальну перевагу, формує міжнародний наратив і виховує покоління стратегічних мислителів. Саме тому Росія десятиліттями використовує шахи як інструмент м'якої сили — від радянських програм «шахи масам» до сучасного контролю над FIDE.</p>
+      <p data-i="ctx-p2">Сьогодні Міжнародну шахову федерацію очолює Аркадій Дворкович — колишній віцепрем'єр уряду РФ. До наглядової ради Федерації шахів Росії входять Сергій Шойгу та Дмитро Пєсков. До половини турнірного бюджету FIDE надходить від спонсорів, пов'язаних із московською сферою впливу.</p>
+      <p data-i="ctx-p3">П'ять демократичних федерацій — України, Англії, Норвегії, Естонії та Німеччини — подали позов до Спортивного арбітражного суду проти рішення FIDE щодо повернення Росії до командних змагань.</p>
+    </div>
+    <div class="ctx-quote rv rv-d2">
+      <p data-i="ctx-quote">&laquo;Будь-яке повернення Росії до FIDE стане для Кремля можливістю вказати і сказати: дивіться, нам дозволили повернутися до шахів. Вони зможуть продемонструвати своїм громадянам, що їм не доводиться терпіти стільки злиднів, скільки вони повинні терпіти через війну.&raquo;</p>
+      <cite data-i="ctx-cite">— Малкольм Пейн, британський шаховий журналіст</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PROBLEMS ======================== -->
+<section class="s-dark prb" id="problems">
+  <div class="prb-ghost">110</div>
+  <p class="t-label s-label rv" data-i="prb-label">02 — Проблеми</p>
+  <h2 class="rv" data-i="prb-h2">110 шахістів.<br>Змінений прапор.</h2>
+  <div class="prb-body">
+    <p class="rv rv-d1" data-i="prb-p1">Після початку повномасштабного вторгнення 110 українських шахістів змінили федерацію, під прапором якої виступають. <strong>60% із них — до 18 років.</strong> Це не просто статистика — це втрата цілого покоління.</p>
+    <p class="rv rv-d2" data-i="prb-p2">Україна стикається з системними проблемами у шаховій сфері: виїзд талановитої молоді за кордон, відсутність українськомовної шахової літератури, жодного великого міжнародного турніру в країні, жодного шахового хабу в Києві — і все це на тлі агресивного впливу Росії через інституції FIDE.</p>
+    <p class="rv rv-d3" data-i="prb-p3">Тотальний брак матеріалів для навчання: <strong>нуль книг українською мовою для високого рівня гри</strong> — тоді як російською їх тисячі. Покоління українських шахістів досі змушене вчитися мовою агресора, бо альтернативи просто не існує.</p>
+  </div>
+  <p class="prb-coda rv rv-d4" data-i="prb-coda">І водночас — українські шахісти продовжують перемагати.</p>
+</section>
+
+<!-- ======================== FIDE ======================== -->
+<section class="s-blue" id="fide">
+  <div class="fide-grid">
+    <div class="rv">
+      <div class="fide-big">5<sup data-i="fide-sup">-та</sup></div>
+    </div>
+    <div class="fide-details rv rv-d1">
+      <p class="t-label s-label" data-i="fide-label">Рейтинг FIDE</p>
+      <h2 data-i="fide-h2">Україна — п'ята шахова федерація світу</h2>
+      <table class="fide-tbl">
+        <tr><td class="p">1</td><td class="c" data-i="f-china">Китай</td><td class="r">2574</td></tr>
+        <tr><td class="p">2</td><td class="c" data-i="f-india">Індія</td><td class="r">2556</td></tr>
+        <tr><td class="p">3</td><td class="c" data-i="f-usa">США</td><td class="r">2546</td></tr>
+        <tr><td class="p">4</td><td class="c" data-i="f-russia">Росія</td><td class="r">2507</td></tr>
+        <tr class="ua"><td class="p">5</td><td class="c" data-i="f-ukraine">Україна</td><td class="r">2503</td></tr>
+        <tr><td class="p">6</td><td class="c" data-i="f-france">Франція</td><td class="r">2485</td></tr>
+        <tr><td class="p">7</td><td class="c" data-i="f-germany">Німеччина</td><td class="r">2484</td></tr>
+        <tr><td class="p">8</td><td class="c" data-i="f-poland">Польща</td><td class="r">2469</td></tr>
+      </table>
+      <p class="fide-note" data-i="fide-note">FIDE Top Federations Mixed — Січень 2026. Це не спадщина минулого — це результат, який потрібно утримати й&nbsp;посилити.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="mq mq-dark">
+  <div class="mq-inner" style="animation-direction:reverse">
+    <span data-i="mq2-1">Чемпіони Європи</span><span class="dot"></span>
+    <span data-i="mq2-2">Наймолодший гросмейстер</span><span class="dot"></span>
+    <span data-i="mq2-3">Олімпійське золото</span><span class="dot"></span>
+    <span data-i="mq2-4">CAS перемога</span><span class="dot"></span>
+    <span>Marienbad Open</span><span class="dot"></span>
+    <span data-i="mq2-5">Будапешт 2024</span><span class="dot"></span>
+    <span data-i="mq2-1">Чемпіони Європи</span><span class="dot"></span>
+    <span data-i="mq2-2">Наймолодший гросмейстер</span><span class="dot"></span>
+    <span data-i="mq2-3">Олімпійське золото</span><span class="dot"></span>
+    <span data-i="mq2-4">CAS перемога</span><span class="dot"></span>
+    <span>Marienbad Open</span><span class="dot"></span>
+    <span data-i="mq2-5">Будапешт 2024</span><span class="dot"></span>
+  </div>
+</div>
+
+<!-- ======================== NEWS ======================== -->
+<section id="news">
+  <p class="t-label s-label rv" data-i="news-label">03 — Новини</p>
+  <h2 class="rv" data-i="news-h2">Новини</h2>
+  <div class="news-grid">
+    <div class="news-card rv rv-d1">
+      <p class="t-label news-date">2025</p>
+      <h3 data-i="n1-h">Чемпіони Європи 2025</h3>
+      <p data-i="n1-p">Збірна України з шахів здобула золото на Командному чемпіонаті Європи 2025 у Батумі, Грузія. Чоловіча збірна підтвердила статус найсильнішої команди континенту, а жіноча — здобула срібні нагороди.</p>
+    </div>
+    <div class="news-card rv rv-d2">
+      <p class="t-label news-date">2024</p>
+      <h3 data-i="n2-h">Наймолодший гросмейстер у світі — українець</h3>
+      <p data-i="n2-p">Ігор Самуненков із Харкова став наймолодшим гросмейстером в історії шахів, отримавши титул у 2024 році. Його родина покинула Україну через війну, але він продовжує виступати під українським прапором.</p>
+    </div>
+    <div class="news-card rv rv-d3">
+      <p class="t-label news-date">2022</p>
+      <h3 data-i="n3-h">Золото Олімпіади — з-під обстрілів</h3>
+      <p data-i="n3-p">На 44-й Шаховій олімпіаді у Ченнаї жіноча збірна України вдруге в історії здобула золото. Анна Музичук та команда показали результат, що вразив увесь шаховий світ.</p>
+    </div>
+    <div class="news-card rv rv-d1">
+      <p class="t-label news-date">2026</p>
+      <h3 data-i="n4-h">Marienbad Open — перемога Коробова</h3>
+      <p data-i="n4-p">Антон Коробов переміг на престижному турнірі Marienbad Open 2026, підтвердивши, що українські шахи залишаються у світовій еліті.</p>
+    </div>
+    <div class="news-card rv rv-d2">
+      <p class="t-label news-date">2024</p>
+      <h3 data-i="n5-h">Олімпіада у Будапешті — Україна б'є фаворитів</h3>
+      <p data-i="n5-p">На 45-й Шаховій олімпіаді збірна України здобула важливі перемоги над США та В'єтнамом, продемонструвавши конкурентоспроможність на найвищому рівні.</p>
+    </div>
+    <div class="news-card rv rv-d3">
+      <p class="t-label news-date">2026</p>
+      <h3 data-i="n6-h">Politico: «Україна перемагає Росію»</h3>
+      <p data-i="n6-p">Авторитетне видання Politico Europe опублікувало матеріал про перемогу України над Росією у Спортивному арбітражному суді (CAS) — прецедент, що стосується і шахів.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== KOVALENKO ======================== -->
+<section class="s-dark" id="kovalenko">
+  <p class="t-label s-label rv" data-i="kov-label">04 — Обличчя хабу</p>
+  <div class="kov-layout">
+    <div class="kov-text">
+      <h2 class="rv" data-i="kov-h2">Ігор Коваленко.<br><em data-i="kov-em">З окопу — на шахівницю.</em></h2>
+      <div class="kov-body">
+        <p class="rv rv-d1" data-i="kov-p1">Ігор Коваленко — топ-1 шахіст України, гросмейстер, чемпіон Європи 2025 у складі української збірної. З 2022 року — військовий. Захищає Україну від російської агресії та одночасно бере участь у щотижневих турнірах Titled Tuesday, змагаючись із найсильнішими шахістами світу — буквально з окопу.</p>
+        <p class="rv rv-d2" data-i="kov-p2">Ігор — ідейний натхненник і публічне обличчя KSE Chess Hub. Його історія — це не просто спорт. Це доказ того, що українці здатні поєднувати мужність і інтелект, боротьбу і стратегію, обов'язок і майстерність.</p>
+      </div>
+      <div class="kov-mission rv rv-d3">
+        <p data-i="kov-mission">Місія Хабу — виховати покоління шахістів, готових продовжити цю справу: сильних, розумних, мужніх, із високим рейтингом і проукраїнською позицією, здатних відстоювати інтереси України на міжнародній шаховій арені.</p>
+      </div>
+    </div>
+    <div class="kov-side">
+      <div class="kov-stat rv">
+        <div class="num">#1</div>
+        <p class="t-label lbl" data-i="kov-s1">Шахіст України</p>
+      </div>
+      <div class="kov-stat rv rv-d1">
+        <div class="num">GM</div>
+        <p class="t-label lbl" data-i="kov-s2">Гросмейстер</p>
+      </div>
+      <div class="kov-stat rv rv-d2">
+        <div class="num">2025</div>
+        <p class="t-label lbl" data-i="kov-s3">Чемпіон Європи у складі збірної</p>
+      </div>
+      <div class="kov-stat rv rv-d3">
+        <div class="num">2022</div>
+        <p class="t-label lbl" data-i="kov-s4">Військовий. Захисник.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== TEAM ======================== -->
+<section id="team">
+  <p class="t-label s-label rv" data-i="team-label">05 — Команда</p>
+  <h2 class="rv" data-i="team-h2">Команда Хабу</h2>
+  <div class="team-grid">
+    <div class="team-m rv rv-d1">
+      <h3>Ігор Коваленко</h3>
+      <p class="t-label role" data-i="t1-role">Ідейний натхненник</p>
+      <p data-i="t1-desc">Топ-1 український гросмейстер, чемпіон Європи 2025 у складі збірної, військовий.</p>
+    </div>
+    <div class="team-m rv rv-d2">
+      <h3>Сергій Павлов</h3>
+      <p class="t-label role" data-i="t2-role">Тренер</p>
+      <p data-i="t2-desc">Міжнародний майстер із багаторічним досвідом тренерської та організаторської роботи, зокрема тренування університетських шахових команд.</p>
+    </div>
+    <div class="team-m rv rv-d3">
+      <h3 data-i="t3-name">Шаховий клуб KSE</h3>
+      <p class="t-label role" data-i="t3-role">Організація</p>
+      <p data-i="t3-desc">Студентська команда, що забезпечує організаційну діяльність Хабу — від тренувань до турнірів.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <p class="ft-statement rv" data-i="ft-statement">Шахи — це мова, якою Україна говорить зі світом.<br><em>Ми робимо так, щоб цю мову почули.</em></p>
+  <div class="ft-bottom">
+    <div class="ft-info">
+      KSE Chess Hub<br>
+      <span data-i="ft-init">Ініціатива Київської школи економіки</span><br>
+      chess@kse.ua
+    </div>
+    <div class="ft-brand">Kyiv School of Economics</div>
+  </div>
+</footer>
+
+<script>
+// ============ GOOEY TEXT ============
+;(function(){
+  var ua=["Інтелект","Стратегія","Незалежність","Перемога"];
+  var en=["Intellect","Strategy","Independence","Victory"];
+  var texts=ua;
+  var mt=0.72,ct=0.9;
+  var t1=document.getElementById("g1"),t2=document.getElementById("g2");
+  if(!t1||!t2)return;
+  var idx=texts.length-1,time=new Date(),morph=0,cool=ct;
+  t1.textContent=texts[idx%texts.length];
+  t2.textContent=texts[(idx+1)%texts.length];
+  function setM(f){
+    t2.style.filter="blur("+Math.min(8/f-8,100)+"px)";
+    t2.style.opacity=(Math.pow(f,.4)*100)+"%";
+    var f2=1-f;
+    t1.style.filter="blur("+Math.min(8/f2-8,100)+"px)";
+    t1.style.opacity=(Math.pow(f2,.4)*100)+"%";
+  }
+  function doC(){morph=0;t2.style.filter="";t2.style.opacity="100%";t1.style.filter="";t1.style.opacity="0%"}
+  function doM(){morph-=cool;cool=0;var f=morph/mt;if(f>1){cool=ct;f=1}setM(f)}
+  function anim(){
+    requestAnimationFrame(anim);
+    var n=new Date(),si=cool>0,dt=(n-time)/1000;time=n;cool-=dt;
+    if(cool<=0){if(si){idx=(idx+1)%texts.length;t1.textContent=texts[idx%texts.length];t2.textContent=texts[(idx+1)%texts.length]}doM()}else{doC()}
+  }
+  anim();
+  window._gooeySetLang=function(lang){texts=lang==="en"?en:ua;idx=texts.length-1;t1.textContent=texts[idx%texts.length];t2.textContent=texts[(idx+1)%texts.length]}
+})();
+
+// ============ SCROLL REVEAL ============
+;(function(){
+  var els=document.querySelectorAll(".rv");
+  var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add("v")})},{threshold:0.08,rootMargin:"0px 0px -30px 0px"});
+  els.forEach(function(el){obs.observe(el)});
+})();
+
+// ============ SMOOTH SCROLL ============
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener("click",function(e){e.preventDefault();var t=document.querySelector(this.getAttribute("href"));if(t)t.scrollIntoView({behavior:"smooth",block:"start"})})
+});
+
+// ============ i18n ============
+;(function(){
+  var lang="ua";
+  var dict={
+    "nav-context":{en:"Context"},
+    "nav-news":{en:"News"},
+    "nav-kov":{en:"Kovalenko"},
+    "nav-team":{en:"Team"},
+    "hero-kicker":{en:"KSE \u00D7 Chess \u2014 Kyiv School of Economics"},
+    "hero-h1":{en:"Intellectual<br>independence starts<br>with the first move"},
+    "hero-sub":{en:"<strong>KSE Chess Hub</strong> \u2014 an ecosystem for developing Ukrainian chess at the Kyiv School of Economics. We build an environment where talented young chess players receive training, support, and community \u2014 and stay to win here, in\u00A0Ukraine."},
+    "hero-cta":{en:"Learn more"},
+    "mq1-1":{en:"Chess is geopolitics"},
+    "mq1-2":{en:"Intellectual independence"},
+    "mq1-3":{en:"5th federation in the world"},
+    "mq1-4":{en:"European Champions 2025"},
+    "ctx-label":{en:"01 \u2014 Context"},
+    "ctx-h2":{en:"Chess is geopolitics"},
+    "ctx-p1":{en:"Chess is one of the few domains where a state simultaneously demonstrates intellectual superiority, shapes international narratives, and nurtures generations of strategic thinkers. This is exactly why Russia has used chess as a soft power instrument for decades \u2014 from Soviet \u201Cchess for the masses\u201D programs to modern-day control over FIDE."},
+    "ctx-p2":{en:"Today, the International Chess Federation is led by Arkady Dvorkovich \u2014 former Deputy Prime Minister of Russia. The supervisory board of the Russian Chess Federation includes Sergei Shoigu and Dmitry Peskov. Up to half of FIDE\u2019s tournament budget comes from sponsors connected to Moscow\u2019s sphere of influence."},
+    "ctx-p3":{en:"Five democratic federations \u2014 Ukraine, England, Norway, Estonia, and Germany \u2014 have filed a lawsuit with the Court of Arbitration for Sport against FIDE\u2019s decision to readmit Russia to team competitions."},
+    "ctx-quote":{en:"\u00ABRussia\u2019s return to FIDE would give the Kremlin an opportunity to point and say: look, we were allowed back into chess. They could show their citizens that they don\u2019t have to endure as much hardship as they should because of the war.\u00BB"},
+    "ctx-cite":{en:"\u2014 Malcolm Pein, British chess journalist"},
+    "prb-label":{en:"02 \u2014 Problems"},
+    "prb-h2":{en:"110 chess players.<br>Changed flag."},
+    "prb-p1":{en:"Since the start of the full-scale invasion, 110 Ukrainian chess players have changed the federation they compete under. <strong>60% of them were under 18.</strong> This isn\u2019t just a statistic \u2014 it\u2019s the loss of an entire generation."},
+    "prb-p2":{en:"Ukraine faces systemic challenges in chess: talented youth leaving the country, zero Ukrainian-language chess literature, no major international tournament in the country, no chess hub in Kyiv \u2014 all against the backdrop of Russia\u2019s aggressive influence through FIDE institutions."},
+    "prb-p3":{en:"A total lack of educational materials: <strong>zero books in Ukrainian for high-level play</strong> \u2014 while there are thousands in Russian. Generations of Ukrainian chess players are still forced to learn in the language of the aggressor because no alternative exists."},
+    "prb-coda":{en:"And yet \u2014 Ukrainian chess players keep winning."},
+    "fide-sup":{en:"th"},
+    "fide-label":{en:"FIDE Rating"},
+    "fide-h2":{en:"Ukraine \u2014 the world\u2019s 5th chess federation"},
+    "f-china":{en:"China"},"f-india":{en:"India"},"f-usa":{en:"USA"},"f-russia":{en:"Russia"},
+    "f-ukraine":{en:"Ukraine"},"f-france":{en:"France"},"f-germany":{en:"Germany"},"f-poland":{en:"Poland"},
+    "fide-note":{en:"FIDE Top Federations Mixed \u2014 January 2026. This is not a legacy of the past \u2014 it\u2019s a result that needs to be maintained and\u00A0strengthened."},
+    "mq2-1":{en:"European Champions"},"mq2-2":{en:"Youngest Grandmaster"},"mq2-3":{en:"Olympic Gold"},
+    "mq2-4":{en:"CAS Victory"},"mq2-5":{en:"Budapest 2024"},
+    "news-label":{en:"03 \u2014 News"},"news-h2":{en:"News"},
+    "n1-h":{en:"European Champions 2025"},
+    "n1-p":{en:"Ukraine\u2019s chess team won gold at the 2025 European Team Championship in Batumi, Georgia. The men\u2019s team confirmed its status as the strongest on the continent, while the women\u2019s team took silver."},
+    "n2-h":{en:"World\u2019s youngest grandmaster \u2014 Ukrainian"},
+    "n2-p":{en:"Ihor Samunenkov from Kharkiv became the youngest grandmaster in chess history in 2024. His family fled Ukraine due to the war, but he continues to compete under the Ukrainian flag."},
+    "n3-h":{en:"Olympiad gold \u2014 under fire"},
+    "n3-p":{en:"At the 44th Chess Olympiad in Chennai, Ukraine\u2019s women\u2019s team won gold for the second time in history. Anna Muzychuk and the team delivered a result that astonished the entire chess world."},
+    "n4-h":{en:"Marienbad Open \u2014 Korobov wins"},
+    "n4-p":{en:"Anton Korobov won the prestigious Marienbad Open 2026, proving that Ukrainian chess remains among the world elite."},
+    "n5-h":{en:"Budapest Olympiad \u2014 Ukraine beats favorites"},
+    "n5-p":{en:"At the 45th Chess Olympiad, Ukraine secured crucial victories over the USA and Vietnam, demonstrating competitiveness at the highest level."},
+    "n6-h":{en:"Politico: \u00ABUkraine beats Russia\u00BB"},
+    "n6-p":{en:"Politico Europe published a piece on Ukraine\u2019s victory over Russia at the Court of Arbitration for Sport (CAS) \u2014 a precedent that extends to chess."},
+    "kov-label":{en:"04 \u2014 The Face"},
+    "kov-h2":{en:"Ihor Kovalenko.<br><em>From the trench \u2014 to the chessboard.</em>"},
+    "kov-em":{en:"From the trench \u2014 to the chessboard."},
+    "kov-p1":{en:"Ihor Kovalenko is Ukraine\u2019s #1 chess player, a grandmaster, and 2025 European champion as part of the national team. Since 2022 \u2014 a soldier. He defends Ukraine from Russian aggression while participating in weekly Titled Tuesday tournaments, competing against the world\u2019s best players \u2014 literally from the trenches."},
+    "kov-p2":{en:"Ihor is the ideological inspirer and public face of KSE Chess Hub. His story isn\u2019t just sport. It\u2019s proof that Ukrainians are capable of combining courage and intellect, struggle and strategy, duty and mastery."},
+    "kov-mission":{en:"The Hub\u2019s mission is to raise a generation of chess players ready to continue this cause: strong, smart, courageous, with high ratings and a pro-Ukrainian stance, capable of defending Ukraine\u2019s interests on the international chess arena."},
+    "kov-s1":{en:"Chess player of Ukraine"},"kov-s2":{en:"Grandmaster"},
+    "kov-s3":{en:"European Champion with the national team"},"kov-s4":{en:"Soldier. Defender."},
+    "team-label":{en:"05 \u2014 Team"},"team-h2":{en:"The Hub Team"},
+    "t1-role":{en:"Ideological Inspirer"},
+    "t1-desc":{en:"Ukraine\u2019s #1 grandmaster, 2025 European champion as part of the national team, soldier."},
+    "t2-role":{en:"Coach"},
+    "t2-desc":{en:"International Master with years of coaching and organizational experience, including training university chess teams."},
+    "t3-name":{en:"KSE Chess Club"},"t3-role":{en:"Organization"},
+    "t3-desc":{en:"The student team that manages Hub operations \u2014 from training sessions to tournaments."},
+    "ft-statement":{en:"Chess is the language Ukraine speaks to the world.<br><em>We make sure that language is heard.</em>"},
+    "ft-init":{en:"An initiative of Kyiv School of Economics"}
+  };
+  // store originals
+  var originals={};
+  document.querySelectorAll("[data-i]").forEach(function(el){originals[el.getAttribute("data-i")]=el.innerHTML});
+
+  document.getElementById("langToggle").addEventListener("click",function(){
+    lang=lang==="ua"?"en":"ua";
+    this.textContent=lang==="ua"?"EN":"UA";
+    document.documentElement.lang=lang==="ua"?"uk":"en";
+    document.querySelectorAll("[data-i]").forEach(function(el){
+      var key=el.getAttribute("data-i");
+      if(lang==="en"&&dict[key]&&dict[key].en){el.innerHTML=dict[key].en}
+      else if(lang==="ua"&&originals[key]){el.innerHTML=originals[key]}
+    });
+    if(window._gooeySetLang)window._gooeySetLang(lang);
+  });
+})();
+</script>
+</body>
+</html>
