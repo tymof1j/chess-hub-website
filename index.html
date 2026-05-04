@@ -251,7 +251,7 @@ section{padding:var(--pad-y) var(--pad-x)}
 .m4-divider .ln{flex:1;height:1px;background:var(--muted-light)}
 .m4-divider .star{color:var(--yellow);font-size:0.85rem}
 .m4-row{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
   border:1.5px solid var(--black);background:var(--cream);
 }
 .m4-tile{
@@ -638,7 +638,7 @@ footer{
     <div>
       <p class="meta" data-i="part-strat-h">Стратегічний партнер</p>
       <h3 data-i="m4-vacant">Місце відкрите</h3>
-      <p class="sub" data-i="m4-strat-sub">Тут може бути логотип патрона, чиї цінності збігаються з місією Хабу. Тендер триває.</p>
+      <p class="sub" data-i="m4-strat-sub">Тут буде логотип головного донора KSE Chess Hub, з яким ми розділяємо спільне бачення.</p>
     </div>
     <a href="mailto:chess@kse.ua" class="m4-cta" data-i="m4-cta">Заявити намір</a>
   </div>
@@ -671,8 +671,9 @@ footer{
       <span class="corner"></span>
       <div class="logo"><img src="obolon-rda-logo.png" alt="Оболонська районна державна адміністрація"></div>
       <div class="name" data-i="part-orda">Оболонська районна державна адміністрація</div>
-      <div class="cat" data-i="m4-c-a">Адміністрація</div>
+      <div class="cat" data-i="m4-c-a">Організаційний</div>
     </div>
+    <!-- MFA tile hidden temporarily; assets remain in repo
     <div class="m4-tile rv rv-d4">
       <span class="num">04</span>
       <span class="corner"></span>
@@ -680,20 +681,9 @@ footer{
       <div class="name" data-i="part-mfa">МЗС України<small data-i="part-mfa-sub">Міністерство закордонних справ</small></div>
       <div class="cat" data-i="m4-c-d">Дипломатичний</div>
     </div>
-  </div>
-</section>
+    -->
 
-<!-- ======================== PROBLEMS ======================== -->
-<section class="s-dark prb" id="problems">
-  <div class="prb-ghost">110</div>
-  <p class="t-label s-label rv" data-i="prb-label">03 — Шахи під час війни</p>
-  <h2 class="rv" data-i="prb-h2">110 шахістів.<br>Змінений прапор.</h2>
-  <div class="prb-body">
-    <p class="rv rv-d1" data-i="prb-p1">Після початку повномасштабного вторгнення 110 українських шахістів змінили федерацію, під прапором якої виступають. <strong>60% із них — до 18 років.</strong> Це не просто статистика — це втрата цілого покоління.</p>
-    <p class="rv rv-d2" data-i="prb-p2">Україна стикається з системними проблемами у шаховій сфері: виїзд талановитої молоді за кордон, відсутність українськомовної шахової літератури, жодного великого міжнародного турніру в країні, жодного шахового хабу в Києві — і все це на тлі агресивного впливу Росії через інституції FIDE.</p>
-    <p class="rv rv-d3" data-i="prb-p3">Тотальний брак матеріалів для навчання: <strong>нуль книг українською мовою для високого рівня гри</strong> — тоді як російською їх тисячі. Покоління українських шахістів досі змушене вчитися мовою агресора, бо альтернативи просто не існує.</p>
   </div>
-  <p class="prb-coda rv rv-d4" data-i="prb-coda">І водночас — українські шахісти продовжують перемагати.</p>
 </section>
 
 <!-- ======================== FIDE ======================== -->
@@ -718,6 +708,19 @@ footer{
       <p class="fide-note" data-i="fide-note">FIDE Top Federations Mixed — Січень 2026. Це не спадщина минулого — це результат, який потрібно утримати й&nbsp;посилити.</p>
     </div>
   </div>
+</section>
+
+<!-- ======================== PROBLEMS ======================== -->
+<section class="s-dark prb" id="problems">
+  <div class="prb-ghost">110</div>
+  <p class="t-label s-label rv" data-i="prb-label">03 — Шахи під час війни</p>
+  <h2 class="rv" data-i="prb-h2">110 шахістів.<br>Змінений прапор.</h2>
+  <div class="prb-body">
+    <p class="rv rv-d1" data-i="prb-p1">Після початку повномасштабного вторгнення 110 українських шахістів змінили федерацію, під прапором якої виступають. <strong>60% із них — до 18 років.</strong> Це не просто статистика — це втрата цілого покоління.</p>
+    <p class="rv rv-d2" data-i="prb-p2">Україна стикається з системними проблемами у шаховій сфері: виїзд талановитої молоді за кордон, відсутність українськомовної шахової літератури, жодного великого міжнародного турніру в країні, жодного шахового хабу в Києві — і все це на тлі агресивного впливу Росії через інституції FIDE.</p>
+    <p class="rv rv-d3" data-i="prb-p3">Тотальний брак матеріалів для навчання: <strong>нуль книг українською мовою для високого рівня гри</strong> — тоді як російською їх тисячі. Покоління українських шахістів досі змушене вчитися мовою агресора, бо альтернативи просто не існує.</p>
+  </div>
+  <p class="prb-coda rv rv-d4" data-i="prb-coda">І водночас — українські шахісти продовжують перемагати.</p>
 </section>
 
 <!-- MARQUEE 2 -->
@@ -878,12 +881,12 @@ footer{
   <h2 class="rv" data-i="team-h2">Команда Хабу</h2>
   <div class="team-grid">
     <div class="team-m rv rv-d1">
-      <h3>Ігор Коваленко</h3>
+      <h3 data-i="t1-name">Ігор Коваленко</h3>
       <p class="t-label role" data-i="t1-role">Головний тренер клубу</p>
       <p data-i="t1-desc">Топ-1 український гросмейстер, чемпіон Європи 2025 у складі збірної, військовий.</p>
     </div>
     <div class="team-m rv rv-d2">
-      <h3>Сергій Павлов</h3>
+      <h3 data-i="t2-name">Сергій Павлов</h3>
       <p class="t-label role" data-i="t2-role">Тренер</p>
       <p data-i="t2-desc">Міжнародний майстер із багаторічним досвідом тренерської та організаторської роботи, зокрема тренування університетських шахових команд.</p>
     </div>
@@ -1030,12 +1033,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     "part-mfa":{en:"MFA of Ukraine"},
     "part-mfa-sub":{en:"Ministry of Foreign Affairs"},
     "m4-vacant":{en:"Position vacant"},
-    "m4-strat-sub":{en:"This space is reserved for a patron whose values align with the Hub’s mission. The tender remains open."},
+    "m4-strat-sub":{en:"This space will hold the logo of KSE Chess Hub’s lead donor — a partner who shares our vision."},
     "m4-cta":{en:"Express interest"},
     "m4-our":{en:"our partners"},
     "m4-c-i":{en:"Institutional"},
     "m4-c-i2":{en:"Institutional"},
-    "m4-c-a":{en:"Administration"},
+    "m4-c-a":{en:"Organizational"},
     "m4-c-d":{en:"Diplomatic"},
     "m4-disp":{en:"dispatches · 2022—2026"},
     "m4-scroll":{en:"Scroll"},
@@ -1089,9 +1092,9 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     "kov-s1":{en:"Chess player of Ukraine"},"kov-s2":{en:"Grandmaster"},
     "kov-s3":{en:"European Champion with the national team"},"kov-s4":{en:"Soldier. Defender."},
     "team-label":{en:"06 \u2014 Team"},"team-h2":{en:"The Hub Team"},
-    "t1-role":{en:"Head Coach"},
+    "t1-name":{en:"Ihor Kovalenko"},"t1-role":{en:"Head Coach"},
     "t1-desc":{en:"Ukraine\u2019s #1 grandmaster, 2025 European champion as part of the national team, soldier."},
-    "t2-role":{en:"Coach"},
+    "t2-name":{en:"Serhii Pavlov"},"t2-role":{en:"Coach"},
     "t2-desc":{en:"International Master with years of coaching and organizational experience, including training university chess teams."},
     "t3-name":{en:"KSE Chess Club"},"t3-role":{en:"Organization"},
     "t3-desc":{en:"The student team that manages Hub operations \u2014 from training sessions to tournaments."},
