@@ -196,6 +196,35 @@ section{padding:var(--pad-y) var(--pad-x)}
   color:rgba(250,250,245,0.78);
 }
 
+/* ===================== SNAPSHOT (polaroid before partners) ===================== */
+.snap{
+  background:var(--cream);
+  padding:clamp(80px,12vh,160px) var(--pad-x);
+  display:flex;justify-content:center;
+}
+.snap-card{
+  background:var(--cream);
+  padding:clamp(16px,1.6vw,22px) clamp(16px,1.6vw,22px) clamp(20px,2vw,28px);
+  border:1.5px solid var(--black);
+  box-shadow:14px 14px 0 var(--black);
+  max-width:460px;width:100%;
+  transform:rotate(-1.2deg);
+  transition:transform .5s cubic-bezier(0.16,1,0.3,1);
+}
+.snap-card:hover{transform:rotate(0deg)}
+.snap-card img{
+  width:100%;height:auto;display:block;
+}
+.snap-cap{
+  margin-top:clamp(14px,1.4vw,20px);
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--black);
+}
+.snap-cap .when{color:var(--muted)}
+.snap-cap .where{font-weight:500}
+
 /* ===================== PARTNERS — V4 (main palette) ===================== */
 .partners{padding:var(--pad-y) var(--pad-x);background:var(--cream)}
 .m4-strategic{
@@ -628,6 +657,17 @@ footer{
   <p class="campus-sub rv rv-d2" data-i="campus-sub">Новий кампус Київської школи економіки на Оболоні стане домом для KSE Chess Hub: тренувань, турнірів і спільноти.</p>
 </section>
 
+<!-- ======================== SNAPSHOT ======================== -->
+<section class="snap" id="snap">
+  <figure class="snap-card rv">
+    <img src="kartynka.jpeg" alt="KSE Chess Hub — ілюстрація">
+    <figcaption class="snap-cap">
+      <span class="when" data-i="snap-when">Липень 2026</span>
+      <span class="where" data-i="snap-where">Кампус KSE</span>
+    </figcaption>
+  </figure>
+</section>
+
 <!-- ======================== PARTNERS — V4 ======================== -->
 <section class="partners" id="partners">
   <p class="t-label s-label rv" data-i="part-label">02 — Партнери</p>
@@ -1022,6 +1062,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     "campus-label":{en:"01 \u2014 Location"},
     "campus-eq":{en:"KSE Obolon Campus = <em>The main location of the chess club for 2026</em>"},
     "campus-sub":{en:"The new Kyiv School of Economics campus in Obolon will become the home of KSE Chess Hub: training, tournaments, and community."},
+    "snap-when":{en:"July 2026"},
+    "snap-where":{en:"KSE Campus"},
     "part-label":{en:"02 \u2014 Partners"},
     "part-h2":{en:"Partnership"},
     "part-strat-h":{en:"Strategic partner"},
