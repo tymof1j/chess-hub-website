@@ -175,7 +175,7 @@ section{padding:var(--pad-y) var(--pad-x)}
 }
 .campus::before{
   content:'';position:absolute;inset:0;z-index:-2;
-  background:url('kse_obolon_campus.jpg') center/cover no-repeat;
+  background:url('kse-obolon-campus.webp') center/cover no-repeat;
 }
 .campus::after{
   content:'';position:absolute;inset:0;z-index:-1;
@@ -577,6 +577,7 @@ footer{
   padding-top:36px;border-top:1px solid rgba(250,250,245,0.08);
 }
 .ft-info{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(250,250,245,0.35);letter-spacing:0.04em;line-height:2.2}
+.ft-info a{transition:color .25s}.ft-info a:hover{color:var(--yellow)}
 .ft-brand{font-family:'Unbounded',sans-serif;font-weight:700;font-size:0.75rem;color:rgba(250,250,245,0.25);letter-spacing:0.02em}
 
 /* ===================== RESPONSIVE ===================== */
@@ -615,7 +616,7 @@ footer{
 <!-- ======================== HERO SPLASH (full viewport) ======================== -->
 <section class="hero-splash" id="hero">
   <a href="#hero" class="hero-logo" aria-label="Kyiv School of Economics">
-    <img src="Kyiv_School_of_Economics_Logo.png" alt="KSE — Kyiv School of Economics">
+    <img src="kse-logo.webp" width="1000" height="250" alt="KSE — Kyiv School of Economics" fetchpriority="high">
   </a>
   <div class="hero-splash-inner">
     <span class="hero-eq">KSE Chess Hub&nbsp;=</span>
@@ -660,7 +661,7 @@ footer{
 <!-- ======================== SNAPSHOT ======================== -->
 <section class="snap" id="snap">
   <figure class="snap-card rv">
-    <img src="KSE_chess.jpg" alt="KSE Chess Hub — ілюстрація">
+    <img src="kse-chess.webp" width="1121" height="1600" alt="KSE Chess Hub — ілюстрація" loading="lazy" decoding="async">
     <figcaption class="snap-cap">
       <span class="when" data-i="snap-when">Липень 2026</span>
       <span class="where" data-i="snap-where">Кампус KSE</span>
@@ -680,7 +681,7 @@ footer{
       <h3 data-i="m4-vacant">Місце відкрите</h3>
       <p class="sub" data-i="m4-strat-sub">Тут буде логотип головного донора KSE Chess Hub, з яким ми розділяємо спільне бачення.</p>
     </div>
-    <a href="mailto:chess@kse.ua" class="m4-cta" data-i="m4-cta">Заявити намір</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeD8gjsSRp0_8k0ctQPyvAx0pSEXn2ySTgl7ZhHH-EXvx0e7w/viewform?usp=publish-editor" class="m4-cta" target="_blank" rel="noopener noreferrer" data-i="m4-cta">Заявити про партнерство</a>
   </div>
 
   <div class="m4-divider">
@@ -695,21 +696,21 @@ footer{
     <div class="m4-tile rv rv-d1">
       <span class="num">01</span>
       <span class="corner"></span>
-      <div class="logo"><img src="fcu-logo.png" alt="Федерація шахів України"></div>
+      <div class="logo"><img src="fcu-logo.webp" width="1200" height="804" alt="Федерація шахів України" loading="lazy" decoding="async"></div>
       <div class="name" data-i="part-fcu">Федерація шахів України</div>
       <div class="cat" data-i="m4-c-i">Інституційний</div>
     </div>
     <div class="m4-tile rv rv-d2">
       <span class="num">02</span>
       <span class="corner"></span>
-      <div class="logo"><img src="fck-logo.png" alt="Федерація шахів Києва"></div>
+      <div class="logo"><img src="fck-logo.webp" width="704" height="700" alt="Федерація шахів Києва" loading="lazy" decoding="async"></div>
       <div class="name" data-i="part-fck">Федерація шахів Києва</div>
       <div class="cat" data-i="m4-c-i2">Інституційний</div>
     </div>
     <div class="m4-tile rv rv-d3">
       <span class="num">03</span>
       <span class="corner"></span>
-      <div class="logo"><img src="obolon-rda-logo.png" alt="Оболонська районна державна адміністрація"></div>
+      <div class="logo"><img src="obolon-rda-logo.webp" width="1134" height="1600" alt="Оболонська районна державна адміністрація" loading="lazy" decoding="async"></div>
       <div class="name" data-i="part-orda">Оболонська районна державна адміністрація</div>
       <div class="cat" data-i="m4-c-a">Організаційний</div>
     </div>
@@ -717,7 +718,7 @@ footer{
     <div class="m4-tile rv rv-d4">
       <span class="num">04</span>
       <span class="corner"></span>
-      <div class="logo"><img src="MFA_UA_Logo_02.svg.png" alt="МЗС України"></div>
+      <div class="logo"><img src="mfa-ua-logo.webp" width="1200" height="750" alt="МЗС України" loading="lazy" decoding="async"></div>
       <div class="name" data-i="part-mfa">МЗС України<small data-i="part-mfa-sub">Міністерство закордонних справ</small></div>
       <div class="cat" data-i="m4-c-d">Дипломатичний</div>
     </div>
@@ -794,7 +795,7 @@ footer{
 
     <article class="news-card rv rv-d1">
       <div class="news-poster">
-        <img src="degtiariov.jpg" alt="Роман Дегтярьов">
+        <img src="degtiariov.webp" width="1040" height="585" alt="Роман Дегтярьов" loading="lazy" decoding="async">
         <span class="ep">EP. 01</span>
         <span class="yr" data-i="m4-d-1">Квітень 2026</span>
         <div class="pin"><span>KHARKIV · UA</span><span>FUTURE OF UA</span></div>
@@ -806,7 +807,7 @@ footer{
 
     <article class="news-card rv rv-d2">
       <div class="news-poster">
-        <img src="yale_win.png" alt="KSE Chess Club vs Yale">
+        <img src="yale-win.webp" width="1600" height="1200" alt="KSE Chess Club vs Yale" loading="lazy" decoding="async">
         <span class="ep">EP. 02</span>
         <span class="yr" data-i="m4-d-2">Квітень 2026</span>
         <div class="pin"><span>USA × UA</span><span>10.5 — 5.5</span></div>
@@ -818,7 +819,7 @@ footer{
 
     <article class="news-card rv rv-d3">
       <div class="news-poster">
-        <img src="ihor_winner.jpg" alt="Ігор Коваленко на KSE Obolon Cup">
+        <img src="ihor-winner.webp" width="1600" height="1068" alt="Ігор Коваленко на KSE Obolon Cup" loading="lazy" decoding="async">
         <span class="ep">EP. 03</span>
         <span class="yr" data-i="m4-d-3">Серпень 2025</span>
         <div class="pin"><span>KYIV · UA</span><span>KSE OBOLON CUP</span></div>
@@ -830,7 +831,7 @@ footer{
 
     <article class="news-card rv rv-d1">
       <div class="news-poster">
-        <img src="shelter.jpeg" alt="Тренування в укритті">
+        <img src="shelter.webp" width="964" height="1280" alt="Тренування в укритті" loading="lazy" decoding="async">
         <span class="ep">EP. 04</span>
         <span class="yr" data-i="m4-d-4">Грудень 2025</span>
         <div class="pin"><span>KYIV · UA</span><span>AIR ALARM</span></div>
@@ -842,7 +843,7 @@ footer{
 
     <article class="news-card rv rv-d2">
       <div class="news-poster">
-        <img src="politico.png" alt="Politico — Україна перемагає Росію">
+        <img src="politico.png" width="1400" height="787" alt="Politico — Україна перемагає Росію" loading="lazy" decoding="async">
         <span class="ep">EP. 05</span>
         <span class="yr" data-i="m4-d-5">Квітень 2026</span>
         <div class="pin"><span>LAUSANNE · CH</span><span>CAS RULING</span></div>
@@ -854,7 +855,7 @@ footer{
 
     <article class="news-card rv rv-d3">
       <div class="news-poster">
-        <img src="korobov.webp" alt="Антон Коробов">
+        <img src="korobov.webp" width="1200" height="678" alt="Антон Коробов" loading="lazy" decoding="async">
         <span class="ep">EP. 06</span>
         <span class="yr" data-i="m4-d-6">Січень 2026</span>
         <div class="pin"><span>MARIENBAD · CZ</span><span>KOROBOV</span></div>
@@ -866,7 +867,7 @@ footer{
 
     <article class="news-card rv rv-d1">
       <div class="news-poster">
-        <img src="team_championship.jpg" alt="Командний чемпіонат Європи 2025">
+        <img src="team-championship.webp" width="1040" height="585" alt="Командний чемпіонат Європи 2025" loading="lazy" decoding="async">
         <span class="ep">EP. 07</span>
         <span class="yr" data-i="m4-d-7">Жовтень 2025</span>
         <div class="pin"><span>BATUMI · GE</span><span>ETC 2025</span></div>
@@ -945,7 +946,7 @@ footer{
     <div class="ft-info">
       KSE Chess Hub<br>
       <span data-i="ft-init">Ініціатива Київської школи економіки</span><br>
-      chess@kse.ua
+      <a href="mailto:chess@kse.ua">chess@kse.ua</a>
     </div>
     <div class="ft-brand">Kyiv School of Economics</div>
   </div>
@@ -1076,7 +1077,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
     "part-mfa-sub":{en:"Ministry of Foreign Affairs"},
     "m4-vacant":{en:"Position vacant"},
     "m4-strat-sub":{en:"This space will hold the logo of KSE Chess Hub’s lead donor — a partner who shares our vision."},
-    "m4-cta":{en:"Express interest"},
+    "m4-cta":{en:"Discuss partnership"},
     "m4-our":{en:"our partners"},
     "m4-c-i":{en:"Institutional"},
     "m4-c-i2":{en:"Institutional"},
